@@ -2,26 +2,28 @@
 const fs = require("fs");
 
 fs.readFile("data", "utf8", (err, data) => {
-  const stack = data.split(",").map(item => parseInt(item))
-  console.log(`Result 1: ${compute(stack,12,2)}`);
+  console.log(`Result 1: ${compute(data, 12,2)}`);
+  console.log(`Result 2: ${findTarget(data, 19690720)}`)
+});
 
-  const target = 19690720
-  idx = 0
+// Find noun and verb for target
+const findTarget = (data, target) => {
+  let idx = 0
   let noun = 0
   let verb = 0
   let result = null
   while(result !== target){
-    const stack = data.split(",").map(item => parseInt(item))
     noun = Math.floor(idx/100)
     verb = idx % 99
-    result = compute(stack, noun, verb)
-    console.log(`${noun}, ${verb} = ${result}`)
+    result = compute(data, noun, verb)
     idx += 1
   }
-  console.log(`Result 2: ${100 * noun + verb}`)
-});
+  return 100 * noun + verb
+}
 
-const compute = (stack, noun, verb) => {
+// Compute stack
+const compute = (data, noun, verb) => {
+  const stack = data.split(",").map(item => parseInt(item))
   let idx = 0;
   let opcode = stack[idx]
   stack[1] = noun;
